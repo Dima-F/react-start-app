@@ -1,30 +1,22 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import Header from './Header';
+import './App.css';
+import RegistrationForm from './RegistrationForm';
 
-const menu = [
-    {
-        link:'/articles',
-        label:'Articles'
-    },
-    {
-        link:'/contects',
-        label:'Contacts'
-    },
-    {
-        link:'/posts',
-        label:'Posts'
-    }
-];
 
 class App extends Component {
-  render() {
-    return (
-        <div>
-            <Header items={menu}/>
-        </div>
-    );
-  }
+        submit(){
+            console.log('submit',this.testInput);
+        }
+        render() {
+            return (
+                <div>
+                <input type="text"
+                    placeholder="test" 
+                    ref={(input)=>this.testInput = input}/>
+                <button onClick={this.submit.bind(this)}>Submit</button>
+                </div>
+            );
+        }
 }
 
 export default App;
