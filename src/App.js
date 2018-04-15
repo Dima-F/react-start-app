@@ -1,22 +1,50 @@
 import React, { Component } from 'react';
-import './App.css';
-import RegistrationForm from './RegistrationForm';
-
+import { connect } from 'react-redux';
 
 class App extends Component {
-        submit(){
-            console.log('submit',this.testInput);
-        }
-        render() {
-            return (
+    addTrack(){
+        this.props.onAddTrack(this.trackInput.value);
+        this.trackInput.value = '';
+    }
+    findTrack(){
+        this.props.onFindTrack(this.searchInput.value);
+    }
+    render() {
+        return (
+            <div>
                 <div>
-                <input type="text"
-                    placeholder="test" 
-                    ref={(input)=>this.testInput = input}/>
-                <button onClick={this.submit.bind(this)}>Submit</button>
+                    <input type="text" ref={(input)=>this.trackInput = input}/>
+                    <button onClick = {this.addTrack.bind(this)}>Add Track</button>
                 </div>
-            );
-        }
+                <div>
+                    <input type="text" ref={(input)=>this.searchInput = input}/>
+                    <button onClick = {this.findTrack.bind(this)}>Find track</button>
+                </div>
+                <ul>
+                    {this.props.tracks.map((track, index)=>
+                        <li key={index}>{track.name}</li>
+                    )}
+                </ul>
+            </div>
+        );
+    }
 }
-
-export default App;
+export default connect(
+    state=>({
+        tracks:state.tracks.filter(track=>track.name.includes(state.filterTracks))
+    }),
+    dispatch=>({
+        onAddTrack:(name)=>{
+            const payload = {
+                id:Date.now().toString(),
+                name
+            };
+            dispatch({type:'ADD_TRACK', payload});
+        },
+        onFindTrack:(name)=>{
+            dispatch({
+                type:'FIND_TRACK', payload: name
+            })
+        }
+    })
+)(App);
