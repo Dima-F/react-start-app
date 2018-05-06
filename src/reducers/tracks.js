@@ -5,6 +5,8 @@ export default function playList(state = initialState, action){
             ...state,
             action.payload
         ]
+    } else if(action.type=='FETCH_TRACKS-SUCCESS'){
+        return action.payload;
     }
     return state;
 }
